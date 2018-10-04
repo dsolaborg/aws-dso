@@ -24,7 +24,8 @@ before_script:
 stages:
   - validate
   - build
-  - deploy
+  - deploy_dev
+  - deploy_prod
 
 validate:
   stage: validate
@@ -43,11 +44,25 @@ plan:
 # Separate apply job for manual launching Terraform as it can be destructive
 # action.
 apply:
-  stage: deploy
+  stage: deploy_dev
+  environment:
+    name: development
+  script:
+    - terraform apply -var-file=dev.tfvars -input=false $PLAN
+  dependencies:
+    - plan
+  when: manual
+  only:
+    - develop
+
+# Separate apply job for manual launching Terraform as it can be destructive
+# action.
+apply:
+  stage: deploy_prod
   environment:
     name: production
   script:
-    - terraform apply -input=false $PLAN
+    - terraform apply -var-file=prod.tfvar -input=false $PLAN
   dependencies:
     - plan
   when: manual
