@@ -1,0 +1,88 @@
+variable "vpc_cidr" {
+  description = "VPC cidr block. Example: 10.0.0.0/16"
+}
+
+variable "environment" {
+  description = "The name of the environment"
+}
+
+variable "destination_cidr_block" {
+  default     = "0.0.0.0/0"
+  description = "Specify all traffic to be routed either trough Internet Gateway or NAT to access the internet"
+}
+
+variable "private_subnet_cidrs" {
+  type        = "list"
+  description = "List of private cidrs, for every avalibility zone you want you need one. Example: 10.0.0.0/24 and 10.0.1.0/24"
+}
+
+variable "public_subnet_cidrs" {
+  type        = "list"
+  description = "List of public cidrs, for every avalibility zone you want you need one. Example: 10.0.0.0/24 and 10.0.1.0/24"
+}
+
+variable "availability_zones" {
+  type        = "list"
+  description = "List of avalibility zones you want. Example: eu-west-1a and eu-west-1b"
+}
+
+###################################### ECS Variables ##########################################
+variable "amis" {
+  description = "Which AMI to spawn. Defaults to the AWS ECS optimized images."
+  default = {
+    us-east-1 = "ami-0b9a214f40c38d5eb"
+    us-east-2 = "ami-09a64272e7fe706b6"
+  }
+}
+
+variable "access_key" {
+  description = "The AWS access key."
+  default = ""
+}
+
+variable "secret_key" {
+  description = "The AWS secret key."
+  default = ""
+}
+
+variable "region" {
+  description = "The AWS region to create resources in."
+  default = "us-east-1"
+}
+
+variable "instance_type" {
+  default = "t1.micro"
+}
+
+variable "min_instance_size" {
+  default = 1
+  description = "Minimum number of EC2 instances."
+}
+
+variable "max_instance_size" {
+  default = 2
+  description = "Maximum number of EC2 instances."
+}
+
+variable "desired_instance_capacity" {
+  default = 1
+  description = "Desired number of EC2 instances."
+}
+
+variable "s3_bucket" {
+  default = "labresources-221380"
+  description = "S3 bucket where remote state and Jenkins data will be stored."
+}
+
+variable "key_name" {
+  default = "secops-03102018"
+  description = "SSH key"
+}
+
+variable "restore_backup" {
+  default = "False"
+  description = "Backup"
+}
+
+
+variable "depends_id" {}
