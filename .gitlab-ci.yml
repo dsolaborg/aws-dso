@@ -12,6 +12,7 @@ image:
 # Default output file for Terraform plan
 variables:
   PLAN: plan.tfplan
+  ENV: dev.tfvars
 
 cache:
   paths:
@@ -30,12 +31,12 @@ stages:
 validate:
   stage: validate
   script:
-    - terraform validate
+    - terraform validate -var-file=$ENV
 
 plan:
   stage: build
   script:
-    - terraform plan -out=$PLAN
+    - terraform plan -var-file=$ENV -out=$PLAN
   artifacts:
     name: plan
     paths:

@@ -54,24 +54,14 @@ resource "aws_route" "private_nat_route" {
 
 # ECS Cluster Configuration
 module "ecs" {
-  source               = "../ecs"
-  environment          = "${var.environment}"
-  access_key             = "${var.access_key}"
-  secret_key             = "${var.secret_key}"
+  source                    = "../ecs"
+  environment               = "${var.environment}"
   instance_type             = "${var.instance_type}"
-  min_instance_size             = "${var.min_instance_size}"
-  max_instance_size             = "${var.max_instance_size}"
-  desired_instance_capacity             = "${var.desired_instance_capacity}"
-  s3_bucket             = "${var.s3_bucket}"
-  region             = "${var.s3_bucket}"
-  s3_bucket             = "${var.region}"
-  key_name             = "${var.key_name}"
-  restore_backup       = "${var.restore_backup}"
-
-  sg_id               = "${module.security_groups.security_group_id}"
-  subnet              = [ "${module.public_subnet.ids}" ]
-
-  amis                 = "${lookup(var.amis, var.region)}"
+  min_instance_size         = "${var.min_instance_size}"
+  max_instance_size         = "${var.max_instance_size}"
+  desired_instance_capacity = "${var.desired_instance_capacity}"
+  region                    = "${var.region}"
+  subnet                    = [ "${module.public_subnet.ids}" ]
 }
 
 # Creating a NAT Gateway takes some time. Some services need the internet (NAT Gateway) before proceeding.
