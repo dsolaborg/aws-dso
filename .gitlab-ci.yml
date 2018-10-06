@@ -50,11 +50,11 @@ apply:
     name: development
   script:
     - terraform apply -var-file=dev.tfvars -input=false $PLAN
-  dependencies:
-    - plan
-  when: manual
-  only:
-    - develop
+#  dependencies:
+#    - plan
+#  when: manual
+#  only:
+#    - develop
 
 # Separate apply job for manual launching Terraform as it can be destructive
 # action.

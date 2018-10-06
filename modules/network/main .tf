@@ -61,7 +61,7 @@ module "ecs" {
   max_instance_size         = "${var.max_instance_size}"
   desired_instance_capacity = "${var.desired_instance_capacity}"
   region                    = "${var.region}"
-  subnet                    = [ "${module.public_subnet.ids}" ]
+  subnet                    = [ "${module.public_subnet.ids}" ]s
 }
 
 # Creating a NAT Gateway takes some time. Some services need the internet (NAT Gateway) before proceeding.
