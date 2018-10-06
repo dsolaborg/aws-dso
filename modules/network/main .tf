@@ -36,6 +36,8 @@ module "nat" {
 
   subnet_ids   = "${module.public_subnet.ids}"
   subnet_count = "${length(var.public_subnet_cidrs)}"
+  environment  = "${var.environment}"
+
 }
 
 resource "aws_route" "public_igw_route" {
@@ -61,13 +63,11 @@ module "ecs" {
   max_instance_size         = "${var.max_instance_size}"
   desired_instance_capacity = "${var.desired_instance_capacity}"
   region                    = "${var.region}"
-  subnet                    = [ "${module.public_subnet.ids}" ]s
+  subnet                    = [ "${module.public_subnet.ids}" ]
 }
 
 # Creating a NAT Gateway takes some time. Some services need the internet (NAT Gateway) before proceeding.
 # Therefore we need a way to depend on the NAT Gateway in Terraform and wait until is finished.
-# Currently Terraform does not allow module dependency to wait on.
-# Therefore we use a workaround described here: https://github.com/hashicorp/terraform/issues/1178#issuecomment-207369534
 
 resource "null_resource" "dummy_dependency" {
   depends_on = ["module.nat"]
