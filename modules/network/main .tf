@@ -31,20 +31,18 @@ module "public_subnet" {
   availability_zones = "${var.availability_zones}"
 }
 
-module "nat" {
-  source = "../nat_gateway"
-
-  subnet_ids   = "${module.public_subnet.ids}"
-  subnet_count = "${length(var.public_subnet_cidrs)}"
-  environment  = "${var.environment}"
-
-}
-
 resource "aws_route" "public_igw_route" {
   count                  = "${length(var.public_subnet_cidrs)}"
   route_table_id         = "${element(module.public_subnet.route_table_ids, count.index)}"
   gateway_id             = "${module.vpc.igw}"
   destination_cidr_block = "${var.destination_cidr_block}"
+}
+
+module "nat" {
+  source = "../nat_gateway"
+
+  subnet_ids   = "${module.public_subnet.ids}"
+  subnet_count = "${length(var.public_subnet_cidrs)}"
 }
 
 resource "aws_route" "private_nat_route" {

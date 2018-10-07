@@ -6,5 +6,3 @@ variable "subnet_ids" {
 variable "subnet_count" {
   description = "Size of the subnet_ids. This needs to be provided because: value of 'count' cannot be computed"
 }
-
-variable "environment" {}

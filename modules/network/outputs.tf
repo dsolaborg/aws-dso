@@ -17,3 +17,15 @@ output "public_subnet_ids" {
 output "depends_id" {
   value = "${null_resource.dummy_dependency.id}"
 }
+
+output "security_group_id" {
+  value = "${module.security_groups.security_group_id}"
+}
+
+output "environment_name" {
+  value = "${var.environment}"
+}
+
+output "availability_zones" {
+  value = "${var.availability_zones}"
+}
