@@ -27,23 +27,6 @@ variable "availability_zones" {
 }
 
 ###################################### ECS Variables ##########################################
-variable "amis" {
-  description = "Which AMI to spawn. Defaults to the AWS ECS optimized images."
-  default = {
-    us-east-1 = "ami-0b9a214f40c38d5eb"
-    us-east-2 = "ami-09a64272e7fe706b6"
-  }
-}
-
-variable "access_key" {
-  description = "The AWS access key."
-  default = ""
-}
-
-variable "secret_key" {
-  description = "The AWS secret key."
-  default = ""
-}
 
 variable "region" {
   description = "The AWS region to create resources in."
@@ -68,21 +51,5 @@ variable "desired_instance_capacity" {
   default = 1
   description = "Desired number of EC2 instances."
 }
-
-variable "s3_bucket" {
-  default = "labresources-221380"
-  description = "S3 bucket where remote state and Jenkins data will be stored."
-}
-
-variable "key_name" {
-  default = "secops-03102018"
-  description = "SSH key"
-}
-
-variable "restore_backup" {
-  default = "False"
-  description = "Backup"
-}
-
 
 variable "depends_id" {}
