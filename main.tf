@@ -1,11 +1,8 @@
 variable "vpc_cidr" {}
 variable "environment" {}
-variable "max_size" {}
-variable "min_size" {}
-variable "desired_capacity" {}
-variable "instance_type" {}
 variable "region" {}
 variable "keypair_name" {}
+variable "bucket_name" {}
 
 provider "aws" {
   version = "~> 1.0"
@@ -32,7 +29,7 @@ variable "availability_zones" {
 data "terraform_remote_state" "tfstate" {
   backend = "s3"
   config {
-    bucket = "labresources-221380"
+    bucket = "${var.bucket_name}"
     key = "${var.environment}/terraform.tfstate"
     region = "us-east-1"
   }
