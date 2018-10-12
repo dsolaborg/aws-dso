@@ -1,7 +1,6 @@
 variable "vpc_cidr" {}
 variable "environment" {}
 variable "region" {}
-variable "keypair_name" {}
 variable "bucket_name" {}
 
 provider "aws" {
@@ -37,11 +36,11 @@ data "terraform_remote_state" "tfstate" {
 
 # Network Configuration
 module "network" {
-  source               = "./modules/network"
+  source               = "modules/network"
   environment          = "${var.environment}"
   vpc_cidr             = "${var.vpc_cidr}"
   public_subnet_cidrs  = "${var.public_subnet_cidrs}"
   private_subnet_cidrs = "${var.private_subnet_cidrs}"
   availability_zones   = "${var.availability_zones}"
-  depends_id           = ""
+  depends_id = ""
 }
