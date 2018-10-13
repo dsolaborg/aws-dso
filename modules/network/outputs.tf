@@ -18,6 +18,10 @@ output "security_group_id" {
   value = "${module.security_groups.security_group_id}"
 }
 
+output "sg_id" {
+  value = "${module.security_groups.sg_id}"
+}
+
 output "environment_name" {
   value = "${var.environment}"
 }

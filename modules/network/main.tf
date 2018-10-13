@@ -21,6 +21,12 @@ module "private_subnet" {
   availability_zones = "${var.availability_zones}"
 }
 
+resource "aws_db_subnet_group" "default" {
+  name        = "rds-subnet-group-${var.environment}"
+  description = "Terraform example RDS subnet group"
+  subnet_ids  = ["${module.private_subnet.ids}"]
+}
+
 module "public_subnet" {
   source = "../subnet"
 
@@ -30,6 +36,8 @@ module "public_subnet" {
   cidrs              = "${var.public_subnet_cidrs}"
   availability_zones = "${var.availability_zones}"
 }
+
+
 
 resource "aws_route" "public_igw_route" {
   count                  = "${length(var.public_subnet_cidrs)}"

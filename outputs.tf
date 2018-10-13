@@ -21,3 +21,7 @@ output "security_group_id" {
 output "environment_name" {
   value = "${var.environment}"
 }
+
+output "rds_security_group_id" {
+  value = "${module.network.sg_id}"
+}
