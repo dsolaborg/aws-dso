@@ -12,7 +12,9 @@ image:
 # Default output file for Terraform plan
 variables:
   PLAN: plan.tfplan
-  ENV: dev.tfvars
+  ENV: development
+  OWNER: tester
+  OWNER_EMAIL: test@test.com
 
 cache:
   paths:
@@ -31,12 +33,12 @@ stages:
 validate:
   stage: validate
   script:
-    - terraform validate -var-file=$ENV
+    - terraform validate -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL'
 
 plan:
   stage: build
   script:
-    - terraform plan -var-file=$ENV -out=$PLAN
+    - terraform plan -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL' -out=$PLAN
   artifacts:
     name: plan
     paths:
@@ -49,7 +51,7 @@ apply:
   environment:
     name: development
   script:
-    - terraform apply -var-file=dev.tfvars -input=false $PLAN
+    - terraform apply -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL' -input=false $PLAN
   dependencies:
     - plan
   when: manual
@@ -63,7 +65,7 @@ apply:
   environment:
     name: production
   script:
-    - terraform apply -var-file=prod.tfvar -input=false $PLAN
+    - terraform apply -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL' -input=false $PLAN
   dependencies:
     - plan
   when: manual
