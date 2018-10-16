@@ -5,10 +5,7 @@
 # entrypoint.
 image:
   name: agra.sdelements.com:4567/cfondop/dso-lab/aws-dso
-  entrypoint:
-    - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-  when: manual
+  entrypoint: ["/bin/sh"]
 
 
 # Default output file for Terraform plan
