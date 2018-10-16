@@ -8,13 +8,15 @@ image:
   entrypoint:
     - '/usr/bin/env'
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  when: manual
+
 
 # Default output file for Terraform plan
 variables:
-  PLAN: plan.tfplan
   ENV: development
-  OWNER: tester
-  OWNER_EMAIL: test@test.com
+  OWNER: dso
+  OWNER_EMAIL: aws-dso@securitycompass.com
+  ENV_FILE: dev.tfvars
 
 cache:
   paths:
@@ -27,18 +29,17 @@ before_script:
 stages:
   - validate
   - build
-  - deploy_dev
-  - deploy_prod
+  - deploy
 
 validate:
   stage: validate
   script:
-    - terraform validate -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL'
+    - terraform validate -var-file=$ENV_FILE -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL'
 
 plan:
   stage: build
   script:
-    - terraform plan -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL' -out=$PLAN
+    - terraform plan -var-file=$ENV_FILE -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL'
   artifacts:
     name: plan
     paths:
@@ -47,27 +48,11 @@ plan:
 # Separate apply job for manual launching Terraform as it can be destructive
 # action.
 apply:
-  stage: deploy_dev
+  stage: deploy
   environment:
-    name: development
+    name: $ENV
   script:
-    - terraform apply -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL' -input=false $PLAN
+    - terraform apply -var-file=$ENV_FILE -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL' -input=false
   dependencies:
     - plan
   when: manual
-  only:
-    - develop
-
-# Separate apply job for manual launching Terraform as it can be destructive
-# action.
-apply:
-  stage: deploy_prod
-  environment:
-    name: production
-  script:
-    - terraform apply -var 'environment=$ENV' -var 'owner=$OWNER' -var 'owner_email=$OWNER_EMAIL' -input=false $PLAN
-  dependencies:
-    - plan
-  when: manual
-  only:
-    - master
