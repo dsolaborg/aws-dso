@@ -14,12 +14,12 @@ output "public_subnet_ids" {
   value = "${module.public_subnet.ids}"
 }
 
-output "depends_id" {
-  value = "${null_resource.dummy_dependency.id}"
-}
-
 output "security_group_id" {
   value = "${module.security_groups.security_group_id}"
+}
+
+output "sg_id" {
+  value = "${module.security_groups.sg_id}"
 }
 
 output "environment_name" {

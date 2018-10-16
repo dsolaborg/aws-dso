@@ -21,6 +21,12 @@ module "private_subnet" {
   availability_zones = "${var.availability_zones}"
 }
 
+resource "aws_db_subnet_group" "default" {
+  name        = "rds-subnet-group-${var.environment}"
+  description = "Terraform example RDS subnet group"
+  subnet_ids  = ["${module.private_subnet.ids}"]
+}
+
 module "public_subnet" {
   source = "../subnet"
 
@@ -31,6 +37,8 @@ module "public_subnet" {
   availability_zones = "${var.availability_zones}"
 }
 
+
+
 resource "aws_route" "public_igw_route" {
   count                  = "${length(var.public_subnet_cidrs)}"
   route_table_id         = "${element(module.public_subnet.route_table_ids, count.index)}"
@@ -40,7 +48,6 @@ resource "aws_route" "public_igw_route" {
 
 module "nat" {
   source = "../nat_gateway"
-
   subnet_ids   = "${module.public_subnet.ids}"
   subnet_count = "${length(var.public_subnet_cidrs)}"
 }
@@ -67,6 +74,6 @@ module "ecs" {
 # Creating a NAT Gateway takes some time. Some services need the internet (NAT Gateway) before proceeding.
 # Therefore we need a way to depend on the NAT Gateway in Terraform and wait until is finished.
 
-resource "null_resource" "dummy_dependency" {
-  depends_on = ["module.nat"]
-}
+#resource "null_resource" "dummy_dependency" {
+#  depends_on = ["module.nat"]
+#}
