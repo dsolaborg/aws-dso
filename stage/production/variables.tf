@@ -1,7 +1,7 @@
 variable "vpc_cidr" {
 	default = "10.10.0.0/16"
 }
-variable "environment" 
+variable "environment" { 
 	default = "production"
 }
 variable "region" {

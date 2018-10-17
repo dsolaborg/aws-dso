@@ -46,18 +46,18 @@ resource "aws_route" "public_igw_route" {
   destination_cidr_block = "${var.destination_cidr_block}"
 }
 
-module "nat" {
-  source = "../nat_gateway"
-  subnet_ids   = "${module.public_subnet.ids}"
-  subnet_count = "${length(var.public_subnet_cidrs)}"
-}
+#module "nat" {
+#  source = "../nat_gateway"
+#  subnet_ids   = "${module.public_subnet.ids}"
+#  subnet_count = "${length(var.public_subnet_cidrs)}"
+#}
 
-resource "aws_route" "private_nat_route" {
-  count                  = "${length(var.private_subnet_cidrs)}"
-  route_table_id         = "${element(module.private_subnet.route_table_ids, count.index)}"
-  nat_gateway_id         = "${element(module.nat.ids, count.index)}"
-  destination_cidr_block = "${var.destination_cidr_block}"
-}
+#resource "aws_route" "private_nat_route" {
+#  count                  = "${length(var.private_subnet_cidrs)}"
+#  route_table_id         = "${element(module.private_subnet.route_table_ids, count.index)}"
+#  nat_gateway_id         = "${element(module.nat.ids, count.index)}"
+#  destination_cidr_block = "${var.destination_cidr_block}"
+#}
 
 # ECS Cluster Configuration
 module "ecs" {
