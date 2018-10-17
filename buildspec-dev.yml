@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     TF_VERSION: "0.11.8"
-    CODEBUILD_SRC_DIR: "stage"
+    STAGE: "stage"
     TF_ENV: "development"
 
 phases:
@@ -28,7 +28,7 @@ phases:
 
   build:
     commands:
-      - cd "${CODEBUILD_SRC_DIR}/${TF_ENV}/"
+      - cd "$CODEBUILD_SRC_DIR/${STAGE}$/{TF_ENV}/"
       - echo " building ${TF_ENV}"
       - terraform init -no-color
 #      - terraform plan -no-color
