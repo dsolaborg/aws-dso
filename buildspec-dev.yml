@@ -30,9 +30,9 @@ phases:
     commands:
       - cd "$CODEBUILD_SRC_DIR/${STAGE}/${TF_ENV}/"
       - echo " building ${TF_ENV}"
-      - terraform init -no-color
-#      - terraform plan -no-color
-#      - terraform apply -no-color
+      - terraform init
+      - terraform plan
+#      - terraform apply
 
   post_build:
     commands:
